@@ -52,6 +52,8 @@
   }
   *,*::before,*::after { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
   body {
     font-family: var(--sans);
     background: var(--paper);
@@ -872,22 +874,117 @@
   .corner.bl { bottom: -1px; left: -1px; border-right: none; border-top: none; }
   .corner.br { bottom: -1px; right: -1px; border-left: none; border-top: none; }
 
+  /* ---------- Responsive ---------- */
+  @media (max-width: 1100px) {
+    .wrap { padding: 0 32px; }
+    h2.section { white-space: normal; }
+    section.block { padding: 96px 0; }
+    .nav { gap: 20px; }
+
+    /* Hero tape demotes to an ambient backdrop on tablet —
+       narrower, lower opacity, stronger fade so it doesn't fight the headline. */
+    .hb-tape {
+      width: 220px;
+      opacity: 0.55;
+      mask-image: linear-gradient(90deg, transparent 0%, #000 28%, #000 100%);
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 28%, #000 100%);
+    }
+    .hb-tape-row { padding: 4px 0; }
+    .hb-tape-row .h { font-size: 9px; }
+    .hb-tape-row .b { font-size: 8.5px; }
+    .hb-tape-row .v,
+    .hb-tape-row .meta { font-size: 8.5px; }
+    .hb-tape-row .st { font-size: 7.5px; padding: 1px 4px; }
+    .hero .wrap {
+      padding-left: 40px;
+      padding-right: 240px;
+    }
+    /* Strengthen the paper-to-transparent veil so the tape feels like
+       a soft data wash behind the text rather than a separate panel. */
+    .hero::after {
+      background: linear-gradient(
+        90deg,
+        var(--paper) 0%,
+        var(--paper) 38%,
+        rgba(253,251,253,0.86) 60%,
+        rgba(253,251,253,0.30) 82%,
+        rgba(253,251,253,0) 100%
+      );
+    }
+  }
+
+  @media (max-width: 900px) {
+    section.block { padding: 80px 0; }
+    .section-head { margin-bottom: 40px; }
+    .events .event { min-height: 130px; padding: 22px 20px 24px; }
+    .events .event h4 { font-size: 24px; }
+    .aud { padding: 28px; }
+    .aud h3 { font-size: 26px; }
+    .app-card h4 { font-size: 28px; }
+  }
+
   @media (max-width: 760px) {
     .three-col { grid-template-columns: 1fr; }
-    .three-col > div { border-right: none; border-bottom: 1px solid var(--rule-soft); padding-left: 0 !important; }
+    .three-col > div {
+      border-right: none;
+      border-bottom: 1px solid var(--rule-soft);
+      padding: 28px 0 !important;
+    }
+    .three-col > div:last-child { border-bottom: none; }
     .events { grid-template-columns: 1fr; }
-    .events .event { border-right: none; }
+    .events .event { border-right: none; min-height: 0; }
+    .events .event:nth-last-child(-n+3) { border-bottom: 1px solid rgba(250,250,249,0.16); }
+    .events .event:last-child { border-bottom: none; }
     .audience { grid-template-columns: 1fr; }
-    .aud { border-right: none; border-bottom: 1px solid var(--ink); }
+    .aud {
+      border-right: none;
+      border-bottom: 1px solid var(--ink);
+      padding: 24px;
+    }
+    .aud:last-child { border-bottom: none; }
+    .aud h3 { font-size: 24px; max-width: none; }
     .stats { grid-template-columns: 1fr 1fr; }
     .footer { grid-template-columns: 1fr 1fr; }
+    .stats { grid-template-columns: 1fr 1fr; }
+
+    /* Hero: tape hides at this breakpoint, so reclaim the right gutter */
+    .hero {
+      min-height: 0;
+      padding: 72px 0 56px;
+    }
+    .hero .wrap {
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+    .hero-cta { flex-wrap: wrap; }
+
+    section.block { padding: 64px 0; }
+    .section-head { margin-bottom: 32px; }
   }
+
   @media (max-width: 700px) {
     .wrap { padding: 0 20px; }
     .nav { display: none; }
     .topbar-inner { grid-template-columns: 1fr auto; }
     .stats { grid-template-columns: 1fr; }
     .stat { border-right: none; border-bottom: 1px solid var(--rule-soft); }
+    .brand-logo { height: 30px; }
+    .topbar-inner { height: 52px; }
+  }
+
+  @media (max-width: 480px) {
+    .wrap { padding: 0 16px; }
+    .hero .wrap { padding-left: 20px; padding-right: 20px; }
+    .hero { padding: 56px 0 40px; }
+    section.block { padding: 56px 0; }
+    .section-head { margin-bottom: 28px; }
+    .aud { padding: 22px; }
+    .aud h3 { font-size: 22px; }
+    .app-card { flex: 0 0 86vw; min-height: 160px; padding: 20px; }
+    .app-card h4 { font-size: 24px; }
+    .btn { padding: 12px 18px; font-size: 12px; }
+    .final { padding: 56px 0 36px; }
+    .footnote { font-size: 11px; }
   }
 </style>
 </head>
@@ -898,9 +995,9 @@
 
 <div class="topbar">
   <div class="wrap topbar-inner">
-    <div class="brand">
+    <a href="#" class="brand" aria-label="Back to top">
       <img src="logo/eris-logo.png" alt="Eris" class="brand-logo"/>
-    </div>
+    </a>
     <nav class="nav">
       <a href="#what">System</a>
       <a href="#apps">Applications</a>
