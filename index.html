@@ -368,7 +368,30 @@
   .btn:hover { background: var(--ink); color: var(--paper); }
   .btn[disabled] { cursor: not-allowed; opacity: 0.6; }
   .btn[disabled]:hover { background: var(--paper); color: var(--ink); filter: none; }
-  .btn.solid[disabled]:hover { background: var(--grad-wing); color: var(--paper); }
+  .btn.solid[disabled] {
+    opacity: 0.85;
+    background-image:
+      linear-gradient(105deg, transparent 38%, rgba(255,255,255,0.42) 50%, transparent 62%),
+      var(--grad-wing);
+    background-size: 220% 100%, 100% 100%;
+    background-position: -110% 0, 0 0;
+    background-repeat: no-repeat;
+    animation: coming-soon-shimmer 2.8s ease-in-out infinite;
+  }
+  .btn.solid[disabled]:hover {
+    background-image:
+      linear-gradient(105deg, transparent 38%, rgba(255,255,255,0.42) 50%, transparent 62%),
+      var(--grad-wing);
+    color: var(--paper);
+  }
+  @keyframes coming-soon-shimmer {
+    0%   { background-position: -110% 0, 0 0; }
+    55%  { background-position:  110% 0, 0 0; }
+    100% { background-position:  110% 0, 0 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .btn.solid[disabled] { animation: none; background-position: 0 0, 0 0; }
+  }
 
 
   /* ---------- Section frame ---------- */
@@ -1198,7 +1221,7 @@
             <div class="ac-strat">Sniping · price discovery · exit timing</div>
           </div>
           <div class="app-card">
-            <h4>Perps</h4>
+            <h4>Perpetuals</h4>
             <div class="ac-strat">Funding arb · basis trade</div>
           </div>
         </div>
